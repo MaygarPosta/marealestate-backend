@@ -17,6 +17,7 @@ app.use('/api/leads', require('./routes/leads'));
 app.use('/api/indicators', require('./routes/indicators'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/upload', require('./routes/upload'));
 
 app.get('/', (req, res) => {
   res.json({ status: 'Marea Real Estate API funcionando' });
