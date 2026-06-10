@@ -5,7 +5,7 @@ require('dotenv').config();
 const app = express();
 
 app.use(cors({
-  origin: ['https://marealestate.cl', 'https://www.marealestate.cl', 'http://localhost:4500'],
+  origin: ['https://marealestate.cl', 'https://www.marealestate.cl', 'http://localhost:4500', 'https://marealestate-frontend.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
