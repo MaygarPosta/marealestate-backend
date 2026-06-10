@@ -2,16 +2,15 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db/pool');
 
-// POST nuevo lead
 router.post('/', async (req, res) => {
+  console.log('Body recibido:', req.body);
   const {
     nombre, apellido, email, telefono, mensaje,
-    tipo_formulario, propiedad_id,
-    consent_given
+    tipo_formulario, propiedad_id, consent_given
   } = req.body;
 
   if (!consent_given) {
-    return res.status(400).json({ error: 'Se requiere consentimiento para procesar la solicitud' });
+    return res.status(400).json({ error: 'Se requiere consentimiento' });
   }
 
   try {
@@ -22,13 +21,14 @@ router.post('/', async (req, res) => {
        RETURNING id`,
       [nombre, apellido, email, telefono, mensaje, tipo_formulario, propiedad_id || null, consent_given, req.ip]
     );
+    console.log('Lead creado id:', result.rows[0].id);
     res.json({ success: true, id: result.rows[0].id });
   } catch (error) {
+    console.error('Error SQL:', error.message);
     res.status(500).json({ error: error.message });
   }
 });
 
-// GET todos los leads (para ADM)
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM leads ORDER BY created_at DESC');
