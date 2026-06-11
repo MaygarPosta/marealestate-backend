@@ -27,7 +27,7 @@ router.post('/property/:id', auth, upload.array('fotos', 10), async (req, res) =
         Body: file.buffer,
         ContentType: file.mimetype,
       }));
-      urls.push(`${process.env.R2_ENDPOINT}/${process.env.R2_BUCKET}/${key}`);
+      urls.push(`${process.env.R2_PUBLIC_URL}/${key}`);
     }
 
     const prop = await pool.query('SELECT fotos FROM properties WHERE id = $1', [req.params.id]);
