@@ -17,7 +17,7 @@ const s3 = new S3Client({
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
 router.post('/property/:id', auth, (req, res, next) => {
-  upload.array('fotos', 10)(req, res, (err) => {
+  upload.array('fotos', 50)(req, res, (err) => {
     if (err) return res.status(400).json({ error: err.message });
     next();
   });
