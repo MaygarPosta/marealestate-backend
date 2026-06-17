@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db/pool');
+const { notificarNuevoLead } = require('../services/email.service');
 
 router.post('/', async (req, res) => {
   console.log('Body recibido:', req.body);
@@ -21,8 +22,12 @@ router.post('/', async (req, res) => {
        RETURNING id`,
       [nombre, apellido, email, telefono, mensaje, tipo_formulario, propiedad_id || null, consent_given, req.ip]
     );
-    console.log('Lead creado id:', result.rows[0].id);
-    res.json({ success: true, id: result.rows[0].id });
+    const leadId = result.rows[0].id;
+    console.log('Lead creado id:', leadId);
+
+    notificarNuevoLead({ nombre, apellido, email, telefono, mensaje, tipo_formulario });
+
+    res.json({ success: true, id: leadId });
   } catch (error) {
     console.error('Error SQL:', error.message);
     res.status(500).json({ error: error.message });
