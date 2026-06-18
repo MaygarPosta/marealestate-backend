@@ -62,4 +62,14 @@ router.delete('/property/:id/foto', auth, async (req, res) => {
   }
 });
 
+
+router.put('/property/:id/reorder', auth, async (req, res) => {
+  try {
+    const { fotos } = req.body;
+    await pool.query('UPDATE properties SET fotos = $1 WHERE id = $2', [fotos, req.params.id]);
+    res.json({ success: true, fotos });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 module.exports = router;
