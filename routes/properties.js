@@ -33,7 +33,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
 
 // GET filtros disponibles
 router.get('/filtros', async (req, res) => {
@@ -72,3 +71,5 @@ router.get('/buscar', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+module.exports = router;
+
