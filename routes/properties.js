@@ -5,7 +5,17 @@ const pool = require('../db/pool');
 // GET todas las propiedades
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM properties WHERE active = true ORDER BY created_at DESC');
+    const result = await pool.query(`
+      SELECT * FROM properties WHERE active = true
+      ORDER BY
+        CASE estado
+          WHEN 'disponible' THEN 1
+          WHEN 'reservado' THEN 2
+          WHEN 'vendido' THEN 3
+          ELSE 4
+        END,
+        created_at DESC
+    `);
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
