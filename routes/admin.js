@@ -45,11 +45,11 @@ router.get('/properties', auth, async (req, res) => {
 
 router.post('/properties', auth, async (req, res) => {
   try {
-    const { titulo, descripcion, tipo, precio_uf, superficie, ubicacion, region, comuna, video_url } = req.body;
+    const { titulo, descripcion, tipo, precio_uf, superficie, sup_construida, sup_terreno, gastos_comunes, ubicacion, region, comuna, video_url } = req.body;
     const result = await pool.query(
-      `INSERT INTO properties (titulo, descripcion, tipo, precio_uf, superficie, ubicacion, region, comuna, video_url, active)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,true) RETURNING *`,
-      [titulo, descripcion, tipo, precio_uf, superficie, ubicacion, region, comuna, video_url]
+      `INSERT INTO properties (titulo, descripcion, tipo, precio_uf, superficie, sup_construida, sup_terreno, gastos_comunes, ubicacion, region, comuna, video_url, active)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true) RETURNING *`,
+      [titulo, descripcion, tipo, precio_uf, superficie, sup_construida, sup_terreno, gastos_comunes, ubicacion, region, comuna, video_url]
     );
     res.json(result.rows[0]);
   } catch (error) {
@@ -59,10 +59,10 @@ router.post('/properties', auth, async (req, res) => {
 
 router.put('/properties/:id', auth, async (req, res) => {
   try {
-    const { titulo, descripcion, tipo, precio_uf, superficie, ubicacion, region, comuna, video_url, estado, active, destacada } = req.body;
+    const { titulo, descripcion, tipo, precio_uf, superficie, sup_construida, sup_terreno, gastos_comunes, ubicacion, region, comuna, video_url, estado, active, destacada } = req.body;
     const result = await pool.query(
-      `UPDATE properties SET titulo=$1, descripcion=$2, tipo=$3, precio_uf=$4, superficie=$5, ubicacion=$6, region=$7, comuna=$8, video_url=$9, estado=$10, active=$11, destacada=$12 WHERE id=$13 RETURNING *`,
-      [titulo, descripcion, tipo, precio_uf, superficie, ubicacion, region, comuna, video_url, estado, active, destacada ?? false, req.params.id]
+      `UPDATE properties SET titulo=$1, descripcion=$2, tipo=$3, precio_uf=$4, superficie=$5, sup_construida=$6, sup_terreno=$7, gastos_comunes=$8, ubicacion=$9, region=$10, comuna=$11, video_url=$12, estado=$13, active=$14, destacada=$15 WHERE id=$16 RETURNING *`,
+      [titulo, descripcion, tipo, precio_uf, superficie, sup_construida, sup_terreno, gastos_comunes, ubicacion, region, comuna, video_url, estado, active, destacada ?? false, req.params.id]
     );
     res.json(result.rows[0]);
   } catch (error) {
