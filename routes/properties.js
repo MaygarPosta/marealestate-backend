@@ -22,17 +22,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET propiedad por id
-router.get('/:id', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM properties WHERE id = $1', [req.params.id]);
-    if (result.rows.length === 0) return res.status(404).json({ error: 'Propiedad no encontrada' });
-    res.json(result.rows[0]);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
 
 // GET filtros disponibles
 router.get('/filtros', async (req, res) => {
@@ -58,7 +47,7 @@ router.get('/buscar', async (req, res) => {
   try {
     const { region, comuna, tipo, precio_max } = req.query;
     let query = `SELECT * FROM properties WHERE active = true`;
-    const params: any[] = [];
+    const params = [];
     let i = 1;
     if (region) { query += ` AND region = $${i++}`; params.push(region); }
     if (comuna) { query += ` AND comuna = $${i++}`; params.push(comuna); }
@@ -69,6 +58,24 @@ router.get('/buscar', async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// GET propiedad por id
+router.get('/:id', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM properties WHERE id = $1', [req.params.id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Propiedad no encontrada' });
+    res.json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
   }
 });
 module.exports = router;
